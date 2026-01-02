@@ -78,10 +78,18 @@ font:
     id: font_normal
     size: 20
     bpp: 2
+    glyphs: [
+      0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZäöüÄÖÜß!,
+      (,),+,-,_,.,°,•,:,;,?
+      ]
   - file: "fonts/DejaVuSans-Bold.ttf"
     id: font_bold
     size: 20
     bpp: 2
+    glyphs: [
+      0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZäöüÄÖÜß!,
+      (,),+,-,_,.,°,•,:,;,?
+      ]
 
 i2c:
   id: touchscreen_bus
