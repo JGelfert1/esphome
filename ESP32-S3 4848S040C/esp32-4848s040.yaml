@@ -161,14 +161,14 @@ lvgl:
       widgets:
         # Container für die Temperaturen (2x2 Grid)
         - obj:
-            height: 200
-            width: 300
+            height: 270
+            width: 400
             align: center
-            y: -80
+            y: -100
             layout:
               type: grid
-              grid_columns: [150, 150]
-              grid_rows: [100, 100]
+              grid_columns: [200, 200]
+              grid_rows: [135, 135]
               grid_column_align: space_around
               grid_row_align: space_around
             widgets:
