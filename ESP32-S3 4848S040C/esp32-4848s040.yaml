@@ -169,11 +169,14 @@ lvgl:
               type: grid
               grid_columns: [200, 200]
               grid_rows: [135, 135]
-              grid_column_align: space_around
-              grid_row_align: space_around
+              grid_column_align: stretch
+              grid_row_align: stretch
             widgets:
               # Wohnzimmer
               - obj:
+                  width: 200
+                  height: 135
+                  pad_all: 0
                   grid_cell_column_pos: 0
                   grid_cell_row_pos: 0
                   layout:
@@ -193,6 +196,9 @@ lvgl:
                         align: center
               # Büro
               - obj:
+                  width: 200
+                  height: 135
+                  pad_all: 0
                   grid_cell_column_pos: 1
                   grid_cell_row_pos: 0
                   layout:
@@ -212,6 +218,9 @@ lvgl:
                         align: center
               # Bad
               - obj:
+                  width: 200
+                  height: 135
+                  pad_all: 0
                   grid_cell_column_pos: 0
                   grid_cell_row_pos: 1
                   layout:
@@ -231,6 +240,9 @@ lvgl:
                         align: center
               # Garten
               - obj:
+                  width: 200
+                  height: 135
+                  pad_all: 0
                   grid_cell_column_pos: 1
                   grid_cell_row_pos: 1
                   layout:
