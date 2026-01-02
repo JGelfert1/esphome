@@ -141,31 +141,31 @@ lvgl:
             y: -80
             layout:
               type: grid
-              grid_columns: [1fr, 1fr]
-              grid_rows: [1fr, 1fr]
+              grid_columns: [150, 150]
+              grid_rows: [60, 60]
               grid_column_align: space_around
               grid_row_align: space_around
             widgets:
               - label:
                   id: label_wohnzimmer
                   text: "Wohnz: --°C"
-                  grid_cell_column: 0
-                  grid_cell_row: 0
+                  grid_cell_column_pos: 0
+                  grid_cell_row_pos: 0
               - label:
                   id: label_buero
                   text: "Büro: --°C"
-                  grid_cell_column: 1
-                  grid_cell_row: 0
+                  grid_cell_column_pos: 1
+                  grid_cell_row_pos: 0
               - label:
                   id: label_bad
                   text: "Bad: --°C"
-                  grid_cell_column: 0
-                  grid_cell_row: 1
+                  grid_cell_column_pos: 0
+                  grid_cell_row_pos: 1
               - label:
                   id: label_garten
                   text: "Garten: --°C"
-                  grid_cell_column: 1
-                  grid_cell_row: 1
+                  grid_cell_column_pos: 1
+                  grid_cell_row_pos: 1
             
         # Der Button
         - button:
@@ -180,7 +180,7 @@ lvgl:
             
             # Aktion beim Drücken
             on_click:
-              - lvgl.pause:
+              - logger.log: "Button wurde gedrückt"
 
 sensor:
   - platform: homeassistant
