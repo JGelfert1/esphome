@@ -80,7 +80,7 @@ font:
     bpp: 2
     glyphs: [
       0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZäöüÄÖÜß!,
-      (,),+,-,_,.,°,•,(:),;,?,\(,\)
+      (,),+,-,_,.,°,•,":",;
       ]
   - file: "fonts/DejaVuSans-Bold.ttf"
     id: font_bold
@@ -88,7 +88,7 @@ font:
     bpp: 2
     glyphs: [
       0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZäöüÄÖÜß!,
-      (,),+,-,_,.,°,•,(:),;,?,\(,\)
+      (,),+,-,_,.,°,•,":",;
       ]
 
 i2c:
