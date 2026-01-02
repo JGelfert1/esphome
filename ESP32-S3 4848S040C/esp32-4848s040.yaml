@@ -178,9 +178,9 @@ lvgl:
                   grid_cell_row_pos: 0
                   layout:
                     type: flex
-                    flex_direction: column
+                    flex_flow: column
                     flex_align_main: center
-                    flex_align_cross: stretch
+                    flex_align_cross: START
                   widgets:
                     - label:
                         text: "Wohnzimmer"
@@ -197,9 +197,9 @@ lvgl:
                   grid_cell_row_pos: 0
                   layout:
                     type: flex
-                    flex_direction: column
+                    flex_flow: column
                     flex_align_main: center
-                    flex_align_cross: stretch
+                    flex_align_cross: START
                   widgets:
                     - label:
                         text: "Büro"
@@ -216,9 +216,9 @@ lvgl:
                   grid_cell_row_pos: 1
                   layout:
                     type: flex
-                    flex_direction: column
+                    flex_flow: column
                     flex_align_main: center
-                    flex_align_cross: stretch
+                    flex_align_cross: START
                   widgets:
                     - label:
                         text: "Bad"
@@ -235,9 +235,9 @@ lvgl:
                   grid_cell_row_pos: 1
                   layout:
                     type: flex
-                    flex_direction: column
+                    flex_flow: column
                     flex_align_main: center
-                    flex_align_cross: stretch
+                    flex_align_cross: START
                   widgets:
                     - label:
                         text: "Garten"
