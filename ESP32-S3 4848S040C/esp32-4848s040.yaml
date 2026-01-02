@@ -133,19 +133,46 @@ lvgl:
   pages:
     - id: main_page
       widgets:
-        # Das Label, das den Text anzeigt
-        - label:
-            id: status_label
-            text: "Warte auf Klick..."
+        # Container für die Temperaturen (2x2 Grid)
+        - obj:
+            height: 120
+            width: 300
             align: center
-            y: -50
+            y: -80
+            layout:
+              type: grid
+              grid_columns: [1fr, 1fr]
+              grid_rows: [1fr, 1fr]
+              grid_column_align: space_around
+              grid_row_align: space_around
+            widgets:
+              - label:
+                  id: label_wohnzimmer
+                  text: "Wohnz: --°C"
+                  grid_cell_column: 0
+                  grid_cell_row: 0
+              - label:
+                  id: label_buero
+                  text: "Büro: --°C"
+                  grid_cell_column: 1
+                  grid_cell_row: 0
+              - label:
+                  id: label_bad
+                  text: "Bad: --°C"
+                  grid_cell_column: 0
+                  grid_cell_row: 1
+              - label:
+                  id: label_garten
+                  text: "Garten: --°C"
+                  grid_cell_column: 1
+                  grid_cell_row: 1
             
         # Der Button
         - button:
             height: 50
             width: 200
             align: center
-            y: 20
+            y: 50
             widgets:
               - label:
                   text: "Drück mich!"
@@ -153,6 +180,38 @@ lvgl:
             
             # Aktion beim Drücken
             on_click:
-              - lvgl.label.update:
-                  id: status_label
-                  text: "Button gedrückt"
+              - lvgl.pause:
+
+sensor:
+  - platform: homeassistant
+    id: temp_wohnzimmer
+    entity_id: ssensor.temperatur_wohnzimmer_temperatur
+    on_value:
+      - lvgl.label.update:
+          id: label_wohnzimmer
+          text: !lambda |-
+            return "Wohnz: " + x + "°C";
+  - platform: homeassistant
+    id: temp_buero
+    entity_id: sensor.temperatur_buro_temperatur
+    on_value:
+      - lvgl.label.update:
+          id: label_buero
+          text: !lambda |-
+            return "Büro: " + x + "°C";
+  - platform: homeassistant
+    id: temp_bad
+    entity_id: sensor.thermometer_badezimmer_temperatur
+    on_value:
+      - lvgl.label.update:
+          id: label_bad
+          text: !lambda |-
+            return "Bad: " + x + "°C";
+  - platform: homeassistant
+    id: temp_garten
+    entity_id: sensor.thermometer_garten_temperature
+    on_value:
+      - lvgl.label.update:
+          id: label_garten
+          text: !lambda |-
+            return "Garten: " + x + "°C";
