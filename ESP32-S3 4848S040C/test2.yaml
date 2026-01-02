@@ -1,0 +1,119 @@
+esphome:
+  name: esp32-4848s040
+  friendly_name: ESP32 Display 4.0
+
+esp32:
+  board: esp32-s3-devkitc-1
+  framework:
+    type: esp-idf
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "qPC7EIAr2+6hP7NN5HkG5JSh/p5e9oCa8MR/TyhMfz0="
+
+ota:
+  - platform: esphome
+    password: "1f23fda514f4a4b958e65a6d6f9d0a60"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "4848-Test Fallback Hotspot"
+    password: "luvQVO1D0W4T"
+
+captive_portal:
+
+# I2C für den Touch-Controller
+i2c:
+  sda: 19
+  scl: 20
+  scan: true
+
+# Das Display-Interface (RGB)
+display:
+  - platform: esp32_lcd_controller
+    id: my_display
+    type: rgb
+    dimensions:
+      width: 480
+      height: 480
+    data_pins:
+      - 42 # D0
+      - 39 # D1
+      - 41 # D2
+      - 48 # D3
+      - 47 # D4
+      - 21 # D5
+      - 14 # D6
+      - 13 # D7
+      - 12 # D8
+      - 11 # D9
+      - 10 # D10
+      - 9  # D11
+      - 3  # D12
+      - 8  # D13
+      - 18 # D14
+      - 17 # D15
+    pclk_pin: 15
+    hsync_pin: 46
+    vsync_pin: 45
+    de_pin: 4
+    # Timings für den ST7701S Controller
+    pclk_frequency: 14MHz
+    hsync_pulse_width: 8
+    hsync_back_porch: 50
+    hsync_front_porch: 10
+    vsync_pulse_width: 8
+    vsync_back_porch: 20
+    vsync_front_porch: 10
+
+# Hintergrundbeleuchtung (Wichtig!)
+output:
+  - platform: ledc
+    pin: GPIO3
+    id: backlight_pwm
+
+touchscreen:
+  - platform: gt911
+    id: my_touch
+    interrupt_pin: 38
+    # reset_pin: 5 # Optional, falls Touch nicht startet
+
+lvgl:
+  touchscreens:
+    - touchscreen_id: my_touch
+  
+  # Hintergrundbeleuchtung beim Start an
+  on_setup:
+    - output.set_level:
+        id: backlight_pwm
+        level: 80%
+
+  pages:
+    - id: main_page
+      widgets:
+        - label:
+            id: status_label
+            text: "Warte auf Klick..."
+            align: center
+            y: -50
+            
+        - button:
+            height: 60
+            width: 200
+            align: center
+            y: 30
+            widgets:
+              - label:
+                  text: "Drück mich!"
+            on_click:
+              - lvgl.label.update:
+                  id: status_label
+                  text: "Button gedrückt"

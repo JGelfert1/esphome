@@ -4,8 +4,20 @@ esphome:
 
 esp32:
   board: esp32-s3-devkitc-1
+  variant: esp32s3
+  flash_size: 8MB
   framework:
     type: esp-idf
+    version: 5.2.2
+    platform_version: 6.7.0
+    sdkconfig_options:
+      CONFIG_ESPTOOLPY_FLASHSIZE_8MB: y
+      CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: y
+      CONFIG_ESP32S3_DATA_CACHE_64KB: y
+      CONFIG_SPIRAM_FETCH_INSTRUCTIONS: y
+      CONFIG_SPIRAM_RODATA: y
+
+
 
 # Enable logging
 logger:
@@ -28,44 +40,88 @@ wifi:
     ssid: "4848-Test Fallback Hotspot"
     password: "luvQVO1D0W4T"
 
-# Konfiguration der Display-Pins (ST7701S via RGB Interface)
+captive_portal:
+
+touchscreen:
+  platform: ft5x06
+  id: my_touchscreen
+  transform:
+    mirror_x: true
+    mirror_y: true
+
 display:
-  - platform: esp32_lcd_eb_lcd
+  - platform: st7701s
     id: my_display
-    type: rgb
+    auto_clear_enabled: false
+    data_rate: 4MHz
+    update_interval: never
+    spi_mode: MODE3
+    color_order: RGB
     dimensions:
       width: 480
       height: 480
-    colormode: RGB565
-    data_pins: [42, 39, 41, 48, 47, 21, 14, 13, 12, 11, 10, 9, 3, 8, 18, 17]
-    pclk_pin: 15
-    hsync_pin: 46
-    vsync_pin: 45
-    de_pin: 4
-    pclk_frequency: 16MHz
-    hsync_pulse_width: 8
-    hsync_back_porch: 50
-    hsync_front_porch: 10
-    vsync_pulse_width: 8
-    vsync_back_porch: 20
-    vsync_front_porch: 10
+    invert_colors: true
+    transform:
+      mirror_x: true
+      mirror_y: true
+    cs_pin:
+      pca9554: pca9554a_device
+      number: 4
+    reset_pin:
+      pca9554: pca9554a_device
+      number: 5
+    de_pin: GPIO18
+    hsync_pin: GPIO16
+    vsync_pin: GPIO17
+    pclk_pin: GPIO21
+    init_sequence:
+      - 1 # select canned init sequence number 1
+      - delay 5ms
+      - [ 0xE0, 0x1F ]  # Set sunlight readable enhancement
+    data_pins:
+      red:
+        - GPIO4         #r1
+        - GPIO3         #r2
+        - GPIO2         #r3
+        - GPIO1         #r4
+        - GPIO0         #r5
+      green:
+        - GPIO10        #g0
+        - GPIO9         #g1
+        - GPIO8         #g2
+        - GPIO7         #g3
+        - GPIO6         #g4
+        - GPIO5         #g5
+      blue:
+        - GPIO15        #b1
+        - GPIO14        #b2
+        - GPIO13        #b3
+        - GPIO12        #b4
+        - GPIO11        #b5
 
-# Touch-Controller (GT911 via I2C)
 i2c:
-  sda: 19
-  scl: 20
+  - id: bus_a
+    sda: GPIO39
+    scl: GPIO40
+    scan: false
 
-touchscreen:
-  - platform: gt911
-    id: my_touch
-    interrupt_pin: 38
-    reset_pin: 5
+spi:
+  - id: lcd_spi
+    clk_pin: GPIO41
+    mosi_pin: GPIO48
+
+pca9554:
+  - id: pca9554a_device
+    address: 0x20
+    pin_count: 16
+
 
 # LVGL Oberfläche
 lvgl:
+  displays:
+    - my_display
   touchscreens:
-    - touchscreen_id: my_touch
-  
+    - my_touchscreen
   # Definition der UI
   pages:
     - id: main_page
