@@ -80,7 +80,7 @@ font:
     bpp: 2
     glyphs: [
       0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZäöüÄÖÜß!,
-      (,),+,-,_,.,°,•,":",;
+      (,),+,-,_,.,°,•,":",;,"\u0020"
       ]
   - file: "fonts/DejaVuSans-Bold.ttf"
     id: font_bold
@@ -88,7 +88,7 @@ font:
     bpp: 2
     glyphs: [
       0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZäöüÄÖÜß!,
-      (,),+,-,_,.,°,•,":",;
+      (,),+,-,_,.,°,•,":",;,"\u0020"
       ]
 
 i2c:
@@ -197,6 +197,7 @@ lvgl:
             y: 50
             widgets:
               - label:
+                  text_font: font_normal
                   text: "Drück mich!"
                   align: center
             
