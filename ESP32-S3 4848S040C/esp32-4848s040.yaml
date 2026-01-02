@@ -73,6 +73,16 @@ spi:
     clk_pin: GPIO48
     mosi_pin: GPIO47
 
+font:
+  - file: "fonts/DejaVuSans.ttf"
+    id: font_normal
+    size: 20
+    bpp: 2
+  - file: "fonts/DejaVuSans-Bold.ttf"
+    id: font_bold
+    size: 20
+    bpp: 2
+
 i2c:
   id: touchscreen_bus
   sda: GPIO19
@@ -149,21 +159,25 @@ lvgl:
               - label:
                   id: label_wohnzimmer
                   text: "Wohnz: --°C"
+                  text_font: font_bold
                   grid_cell_column_pos: 0
                   grid_cell_row_pos: 0
               - label:
                   id: label_buero
                   text: "Büro: --°C"
+                  text_font: font_bold
                   grid_cell_column_pos: 1
                   grid_cell_row_pos: 0
               - label:
                   id: label_bad
                   text: "Bad: --°C"
+                  text_font: font_normal
                   grid_cell_column_pos: 0
                   grid_cell_row_pos: 1
               - label:
                   id: label_garten
                   text: "Garten: --°C"
+                  text_font: font_normal
                   grid_cell_column_pos: 1
                   grid_cell_row_pos: 1
             
@@ -199,7 +213,7 @@ sensor:
       - lvgl.label.update:
           id: label_buero
           text:
-            format: "Buero: %.1f°C"
+            format: "Büro: %.1f°C"
             args: [ 'x' ]
   - platform: homeassistant
     id: temp_bad
