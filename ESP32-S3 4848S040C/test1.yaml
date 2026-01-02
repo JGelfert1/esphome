@@ -1,0 +1,95 @@
+esphome:
+  name: esp32-4848s040
+  friendly_name: ESP32 Display 4.0
+
+esp32:
+  board: esp32-s3-devkitc-1
+  framework:
+    type: esp-idf
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "qPC7EIAr2+6hP7NN5HkG5JSh/p5e9oCa8MR/TyhMfz0="
+
+ota:
+  - platform: esphome
+    password: "1f23fda514f4a4b958e65a6d6f9d0a60"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "4848-Test Fallback Hotspot"
+    password: "luvQVO1D0W4T"
+
+# Konfiguration der Display-Pins (ST7701S via RGB Interface)
+display:
+  - platform: esp32_lcd_eb_lcd
+    id: my_display
+    type: rgb
+    dimensions:
+      width: 480
+      height: 480
+    colormode: RGB565
+    data_pins: [42, 39, 41, 48, 47, 21, 14, 13, 12, 11, 10, 9, 3, 8, 18, 17]
+    pclk_pin: 15
+    hsync_pin: 46
+    vsync_pin: 45
+    de_pin: 4
+    pclk_frequency: 16MHz
+    hsync_pulse_width: 8
+    hsync_back_porch: 50
+    hsync_front_porch: 10
+    vsync_pulse_width: 8
+    vsync_back_porch: 20
+    vsync_front_porch: 10
+
+# Touch-Controller (GT911 via I2C)
+i2c:
+  sda: 19
+  scl: 20
+
+touchscreen:
+  - platform: gt911
+    id: my_touch
+    interrupt_pin: 38
+    reset_pin: 5
+
+# LVGL Oberfläche
+lvgl:
+  touchscreens:
+    - touchscreen_id: my_touch
+  
+  # Definition der UI
+  pages:
+    - id: main_page
+      widgets:
+        # Das Label, das den Text anzeigt
+        - label:
+            id: status_label
+            text: "Warte auf Klick..."
+            align: center
+            y: -50
+            
+        # Der Button
+        - button:
+            height: 50
+            width: 200
+            align: center
+            y: 20
+            widgets:
+              - label:
+                  text: "Drück mich!"
+                  align: center
+            
+            # Aktion beim Drücken
+            on_click:
+              - lvgl.label.update:
+                  id: status_label
+                  text: "Button gedrückt"
