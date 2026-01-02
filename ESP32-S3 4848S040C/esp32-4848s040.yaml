@@ -90,6 +90,14 @@ font:
       0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZäöüÄÖÜß!,
       (,),+,-,_,.,°,•,":",;,"\u0020"
       ]
+  - file: "fonts/DejaVuSans-Bold.ttf"
+    id: font_bold_30
+    size: 30
+    bpp: 2
+    glyphs: [
+      0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZäöüÄÖÜß!,
+      (,),+,-,_,.,°,•,":",;,"\u0020"
+      ]
 
 i2c:
   id: touchscreen_bus
@@ -153,41 +161,93 @@ lvgl:
       widgets:
         # Container für die Temperaturen (2x2 Grid)
         - obj:
-            height: 120
+            height: 200
             width: 300
             align: center
             y: -80
             layout:
               type: grid
               grid_columns: [150, 150]
-              grid_rows: [60, 60]
+              grid_rows: [100, 100]
               grid_column_align: space_around
               grid_row_align: space_around
             widgets:
-              - label:
-                  id: label_wohnzimmer
-                  text: "Wohnz: --°C"
-                  text_font: font_bold
+              # Wohnzimmer
+              - obj:
                   grid_cell_column_pos: 0
                   grid_cell_row_pos: 0
-              - label:
-                  id: label_buero
-                  text: "Büro: --°C"
-                  text_font: font_bold
+                  layout:
+                    type: flex
+                    flex_direction: column
+                    flex_align_main: center
+                    flex_align_cross: stretch
+                  widgets:
+                    - label:
+                        text: "Wohnzimmer"
+                        text_font: font_normal
+                        align: top_left
+                    - label:
+                        id: label_wohnzimmer
+                        text: "--°C"
+                        text_font: font_bold_30
+                        align: center
+              # Büro
+              - obj:
                   grid_cell_column_pos: 1
                   grid_cell_row_pos: 0
-              - label:
-                  id: label_bad
-                  text: "Bad: --°C"
-                  text_font: font_normal
+                  layout:
+                    type: flex
+                    flex_direction: column
+                    flex_align_main: center
+                    flex_align_cross: stretch
+                  widgets:
+                    - label:
+                        text: "Büro"
+                        text_font: font_normal
+                        align: top_left
+                    - label:
+                        id: label_buero
+                        text: "--°C"
+                        text_font: font_bold_30
+                        align: center
+              # Bad
+              - obj:
                   grid_cell_column_pos: 0
                   grid_cell_row_pos: 1
-              - label:
-                  id: label_garten
-                  text: "Garten: --°C"
-                  text_font: font_normal
+                  layout:
+                    type: flex
+                    flex_direction: column
+                    flex_align_main: center
+                    flex_align_cross: stretch
+                  widgets:
+                    - label:
+                        text: "Bad"
+                        text_font: font_normal
+                        align: top_left
+                    - label:
+                        id: label_bad
+                        text: "--°C"
+                        text_font: font_bold_30
+                        align: center
+              # Garten
+              - obj:
                   grid_cell_column_pos: 1
                   grid_cell_row_pos: 1
+                  layout:
+                    type: flex
+                    flex_direction: column
+                    flex_align_main: center
+                    flex_align_cross: stretch
+                  widgets:
+                    - label:
+                        text: "Garten"
+                        text_font: font_normal
+                        align: top_left
+                    - label:
+                        id: label_garten
+                        text: "--°C"
+                        text_font: font_bold_30
+                        align: center
             
         # Der Button
         - button:
@@ -213,7 +273,7 @@ sensor:
       - lvgl.label.update:
           id: label_wohnzimmer
           text:
-            format: "Wohnz: %.1f°C"
+            format: "%.1f°C"
             args: [ 'x' ]
   - platform: homeassistant
     id: temp_buero
@@ -222,7 +282,7 @@ sensor:
       - lvgl.label.update:
           id: label_buero
           text:
-            format: "Büro: %.1f°C"
+            format: "%.1f°C"
             args: [ 'x' ]
   - platform: homeassistant
     id: temp_bad
@@ -231,7 +291,7 @@ sensor:
       - lvgl.label.update:
           id: label_bad
           text:
-            format: "Bad: %.1f°C"
+            format: "%.1f°C"
             args: [ 'x' ]
   - platform: homeassistant
     id: temp_garten
@@ -240,5 +300,5 @@ sensor:
       - lvgl.label.update:
           id: label_garten
           text:
-            format: "Garten: %.1f°C"
+            format: "%.1f°C"
             args: [ 'x' ]
