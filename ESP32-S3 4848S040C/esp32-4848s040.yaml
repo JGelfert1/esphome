@@ -151,6 +151,8 @@ touchscreen:
 
 # LVGL Oberfläche
 lvgl:
+  theme:
+    dark: true
   displays:
     - tft_display
   touchscreens:
