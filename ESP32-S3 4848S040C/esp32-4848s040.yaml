@@ -185,12 +185,12 @@ lvgl:
 sensor:
   - platform: homeassistant
     id: temp_wohnzimmer
-    entity_id: ssensor.temperatur_wohnzimmer_temperatur
+    entity_id: sensor.temperatur_wohnzimmer_temperatur
     on_value:
       - lvgl.label.update:
           id: label_wohnzimmer
           text: !lambda |-
-            return "Wohnz: " + x + "°C";
+            return str_printf("Wohnz: %.1f°C", x);
   - platform: homeassistant
     id: temp_buero
     entity_id: sensor.temperatur_buro_temperatur
@@ -198,7 +198,7 @@ sensor:
       - lvgl.label.update:
           id: label_buero
           text: !lambda |-
-            return "Büro: " + x + "°C";
+            return str_printf("Büro: %.1f°C", x);
   - platform: homeassistant
     id: temp_bad
     entity_id: sensor.thermometer_badezimmer_temperatur
@@ -206,7 +206,7 @@ sensor:
       - lvgl.label.update:
           id: label_bad
           text: !lambda |-
-            return "Bad: " + x + "°C";
+            return str_printf("Bad: %.1f°C", x);
   - platform: homeassistant
     id: temp_garten
     entity_id: sensor.thermometer_garten_temperature
@@ -214,4 +214,4 @@ sensor:
       - lvgl.label.update:
           id: label_garten
           text: !lambda |-
-            return "Garten: " + x + "°C";
+            return str_printf("Garten: %.1f°C", x);
