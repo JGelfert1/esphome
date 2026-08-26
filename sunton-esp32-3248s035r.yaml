@@ -13,15 +13,6 @@ logger:
   level: DEBUG
     
 #Enable Home Assistant API
-<<<<<<< HEAD
-api:
-  encryption:
-    key: "G36DROeEzpS3F7m7xoOK23F87yJZPQ/QyAULjDerBvs="
-
-ota:
-  - platform: esphome
-    password: "21c774b71b4d5b432d8b07a4cb79b6b1"
-=======
 # Api-key aus secrets.yaml
 api:
   encryption:
@@ -29,13 +20,16 @@ api:
 ota:
   - platform: esphome
     password: !secret ota_password
->>>>>>> afeb7d7 (mit apikey secrets)
+
 
 wifi:
   ssid: !secret wifi_ssid
   password:
     !secret wifi_password
 
+packages:
+  lvgl: !include packages/lvgl_gui.yaml
+  
 # ============================================================ 
 # Home Assistant related setup
 #
