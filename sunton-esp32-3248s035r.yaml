@@ -91,7 +91,7 @@ switch:
 # LVGL GUI Definition
 lvgl:
   buffer_size: 30%
-  rotation: 90
+  rotation: 270
   displays:
     - my_display
   touchscreens:
