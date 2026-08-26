@@ -283,6 +283,7 @@ lvgl:
                           y: 8
                       - slider:
                           id: rolladen_slider
+                          align: CENTER
                           min_value: 0
                           max_value: 100
                           width: 380
