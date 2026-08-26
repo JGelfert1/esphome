@@ -1,0 +1,46 @@
+lvgl:
+  pages:
+      - id: page_temp
+        widgets:
+          - obj:
+              x: 0
+              y: 0
+              width: 100%
+              height: 100%
+              clickable: true
+              on_click:
+                - lvgl.page.next:
+              widgets:
+                - label:
+                    align: CENTER
+                    text: "Temperaturen"
+
+      - id: page_shutter
+        widgets:
+          - obj:
+              x: 0
+              y: 0
+              width: 100%
+              height: 100%
+              clickable: true
+              on_click:
+                - lvgl.page.next:
+              widgets:
+                - label:
+                    align: CENTER
+                    text: "Rolladensteuerung"
+
+      - id: page_light
+        widgets:
+          - obj:
+              x: 0
+              y: 0
+              width: 100%
+              height: 100%
+              clickable: true
+              on_click:
+                - lvgl.page.next:
+              widgets:
+                - label:
+                    align: CENTER
+                    text: "Lichtschalter"
