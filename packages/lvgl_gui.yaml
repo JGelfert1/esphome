@@ -53,10 +53,9 @@ sensor:
     attribute: current_position
     on_value:
       then:
-        - lvgl.widget.update:
+        - lvgl.slider.update:
             id: rolladen_slider
-            state:
-              value: !lambda 'return (int)x;'
+            value: !lambda 'return int(x);'
 
 font:
   - file:
@@ -283,19 +282,20 @@ lvgl:
                           x: 10
                           y: 8
                       - slider:
-                        id: rolladen_slider
-                        min_value: 0
-                        max_value: 100
-                        step: 1
-                        
-                        # Beim Loslassen/Verschieben den Service an Home Assistant senden
-                        on_value:
-                          then:
-                            - homeassistant.service:
-                                service: cover.set_cover_position
+                          id: rolladen_slider
+                          min_value: 0
+                          max_value: 100
+                          width: 380
+                          height: 36
+                          on_release:
+                            - logger.log:
+                                format: "Rolladen Wohnzimmer rechts: %.0f%%"
+                                args: [ 'x' ]
+                            - homeassistant.action:
+                                action: cover.set_cover_position
                                 data:
                                   entity_id: cover.han_fun_2_f1
-                                  position: !lambda 'return (int)x;'
+                                  position: !lambda 'return int(x);'
 
       - id: page_light
         styles:
