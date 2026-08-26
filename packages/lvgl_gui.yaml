@@ -1,4 +1,5 @@
 # 1. Home Assistant Sensoren importieren
+
 sensor:
   - platform: homeassistant
     id: temp_wohnzimmer
@@ -44,6 +45,18 @@ sensor:
         - lvgl.label.update:
             id: label_temp_garten
             text: !lambda 'return str_sprintf("%.1f °C", id(temp_garten).state);'
+
+
+  - platform: homeassistant
+    id: ha_rolladen_position
+    entity_id: cover.han_fun_2_f1
+    attribute: current_position
+    on_value:
+      then:
+        - lvgl.widget.update:
+            id: rolladen_slider
+            state:
+              value: !lambda 'return (int)x;'
 
 font:
   - file:
@@ -253,6 +266,36 @@ lvgl:
                      - style_title
                     align: CENTER
                     text: "Rolladensteuerung"
+                - obj:
+                    align: CENTER
+                    width: 420
+                    height: 120
+                    bg_color: 0x202020
+                    border_width: 1
+                    border_color: 0xB0B0B0
+                    radius: 0
+                    widgets:
+                      - label:
+                          text: "Wohnzimmer rechts"
+                          text_font: font_regular_14
+                          text_color: 0xFFFFFF
+                          align: TOP_LEFT
+                          x: 10
+                          y: 8
+                      - slider:
+                        id: rolladen_slider
+                        min_value: 0
+                        max_value: 100
+                        step: 1
+                        
+                        # Beim Loslassen/Verschieben den Service an Home Assistant senden
+                        on_value:
+                          then:
+                            - homeassistant.service:
+                                service: cover.set_cover_position
+                                data:
+                                  entity_id: cover.han_fun_2_f1
+                                  position: !lambda 'return (int)x;'
 
       - id: page_light
         styles:
