@@ -7,7 +7,7 @@ sensor:
       then:
         - lvgl.label.update:
             id: label_temp_wohnzimmer
-            text: !lambda 'return str_sprintf("Wohnzimmer: %.1f °C", id(temp_wohnzimmer).state);'
+            text: !lambda 'return str_sprintf("%.1f °C", id(temp_wohnzimmer).state);'
 
   - platform: homeassistant
     id: temp_buro
@@ -16,7 +16,7 @@ sensor:
       then:
         - lvgl.label.update:
             id: label_temp_buro
-            text: !lambda 'return str_sprintf("Büro: %.1f °C", id(temp_buro).state);'
+            text: !lambda 'return str_sprintf("%.1f °C", id(temp_buro).state);'
 
   - platform: homeassistant
     id: temp_kuche
@@ -25,7 +25,7 @@ sensor:
       then:
         - lvgl.label.update:
             id: label_temp_kuche
-            text: !lambda 'return str_sprintf("Küche: %.1f °C", id(temp_kuche).state);'
+            text: !lambda 'return str_sprintf("%.1f °C", id(temp_kuche).state);'
 
   - platform: homeassistant
     id: temp_badezimmer
@@ -34,7 +34,7 @@ sensor:
       then:
         - lvgl.label.update:
             id: label_temp_badezimmer
-            text: !lambda 'return str_sprintf("Badezimmer: %.1f °C", id(temp_badezimmer).state);'
+            text: !lambda 'return str_sprintf("%.1f °C", id(temp_badezimmer).state);'
 
   - platform: homeassistant
     id: temp_garten
@@ -43,7 +43,7 @@ sensor:
       then:
         - lvgl.label.update:
             id: label_temp_garten
-            text: !lambda 'return str_sprintf("Garten: %.1f °C", id(temp_garten).state);'
+            text: !lambda 'return str_sprintf("%.1f °C", id(temp_garten).state);'
 
 font:
   - file:
@@ -72,6 +72,19 @@ font:
     glyphs:
       - "äöüÄÖÜß°"
 
+  - file:
+      type: gfonts
+      family: Roboto
+      weight: 400
+    id: font_regular_14
+    size: 14
+    bpp: 4
+    glyphsets:
+      - GF_Latin_Kernel
+      - GF_Latin_Core
+    glyphs:
+      - "äöüÄÖÜß°"
+
 lvgl:
 
   theme:
@@ -91,6 +104,22 @@ lvgl:
     - id: style_title
       text_color: 0xFFFFFF
       text_font: font_bold_24
+    - id: style_tile
+      bg_color: 0x000000
+      bg_opa: COVER
+      border_width: 2
+      border_color: 0xB0B0B0
+      radius: 0
+      pad_all: 6
+    - id: style_room_name
+      text_color: 0xFFFFFF
+      text_font: font_regular_14
+      align: TOP_LEFT
+    - id: style_tile_temperature
+      text_color: 0xFFFFFF
+      text_font: font_bold_24
+      align: CENTER
+      text_align: CENTER
 
   pages:
       - id: page_temp
@@ -107,43 +136,104 @@ lvgl:
             clickable: true
             on_click:
               - lvgl.page.next:
-            # Vertikales Layout für die Untereinander-Anordnung:
+            # Zwei Spalten mit festen rechteckigen Kacheln.
             layout:
               type: FLEX
-              flex_flow: COLUMN
+              flex_flow: ROW_WRAP
               flex_align_main: CENTER
-              flex_align_cross: START
-              pad_row: 10
+              flex_align_cross: CENTER
+              pad_row: 8
+              pad_column: 8
             widgets:
-              - label:
-                  id: label_temp_wohnzimmer
-                  text: "Wohnzimmer: --.- °C"
+              - obj:
+                  width: 110
+                  height: 80
                   styles:
-                    - style_temperature
+                    - style_tile
+                  widgets:
+                    - label:
+                        text: "Wohnzimmer"
+                        styles:
+                          - style_room_name
+                    - label:
+                        id: label_temp_wohnzimmer
+                        text: "--.- °C"
+                        width: 100%
+                        height: SIZE_CONTENT
+                        styles:
+                          - style_tile_temperature
 
-              - label:
-                  id: label_temp_buro
-                  text: "Büro: --.- °C"
+              - obj:
+                  width: 110
+                  height: 80
                   styles:
-                    - style_temperature
+                    - style_tile
+                  widgets:
+                    - label:
+                        text: "Büro"
+                        styles:
+                          - style_room_name
+                    - label:
+                        id: label_temp_buro
+                        text: "--.- °C"
+                        width: 100%
+                        height: SIZE_CONTENT
+                        styles:
+                          - style_tile_temperature
 
-              - label:
-                  id: label_temp_kuche
-                  text: "Küche: --.- °C"
+              - obj:
+                  width: 110
+                  height: 80
                   styles:
-                    - style_temperature
+                    - style_tile
+                  widgets:
+                    - label:
+                        text: "Küche"
+                        styles:
+                          - style_room_name
+                    - label:
+                        id: label_temp_kuche
+                        text: "--.- °C"
+                        width: 100%
+                        height: SIZE_CONTENT
+                        styles:
+                          - style_tile_temperature
 
-              - label:
-                  id: label_temp_badezimmer
-                  text: "Badezimmer: --.- °C"
+              - obj:
+                  width: 110
+                  height: 80
                   styles:
-                    - style_temperature
+                    - style_tile
+                  widgets:
+                    - label:
+                        text: "Badezimmer"
+                        styles:
+                          - style_room_name
+                    - label:
+                        id: label_temp_badezimmer
+                        text: "--.- °C"
+                        width: 100%
+                        height: SIZE_CONTENT
+                        styles:
+                          - style_tile_temperature
 
-              - label:
-                  id: label_temp_garten
-                  text: "Garten: --.- °C"
+              - obj:
+                  width: 110
+                  height: 80
                   styles:
-                    - style_temperature
+                    - style_tile
+                  widgets:
+                    - label:
+                        text: "Garten"
+                        styles:
+                          - style_room_name
+                    - label:
+                        id: label_temp_garten
+                        text: "--.- °C"
+                        width: 100%
+                        height: SIZE_CONTENT
+                        styles:
+                          - style_tile_temperature
 
       - id: page_shutter
         styles:
