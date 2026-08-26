@@ -17,6 +17,7 @@ logger:
   level: DEBUG
     
 #Enable Home Assistant API
+<<<<<<< HEAD
 api:
   encryption:
     key: "GM4vD0gDLE8lJvyJNc8Pj+JLzYRIQ74Z3iZacfhNk0M="
@@ -24,6 +25,16 @@ api:
 ota:
   - platform: esphome
     password: "21c774b71b4d5b432d8b07a4cb79b6b1"
+=======
+# Api-key aus secrets.yaml
+api:
+  encryption:
+    key: !secret sunton_esp32_4827s043r__api_key
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+>>>>>>> afeb7d7 (mit apikey secrets)
 
 wifi:
   ssid: !secret wifi_ssid
