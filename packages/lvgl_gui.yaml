@@ -1,3 +1,77 @@
+# 1. Home Assistant Sensoren importieren
+sensor:
+  - platform: homeassistant
+    id: temp_wohnzimmer
+    entity_id: sensor.temperatur_wohnzimmer_temperatur
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: label_temp_wohnzimmer
+            text: !lambda 'return str_sprintf("Wohnzimmer: %.1f °C", id(temp_wohnzimmer).state);'
+
+  - platform: homeassistant
+    id: temp_buro
+    entity_id: sensor.temperatur_buro_temperatur
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: label_temp_buro
+            text: !lambda 'return str_sprintf("Büro: %.1f °C", id(temp_buro).state);'
+
+  - platform: homeassistant
+    id: temp_kuche
+    entity_id: sensor.temperatur_kuche_temperature
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: label_temp_kuche
+            text: !lambda 'return str_sprintf("Küche: %.1f °C", id(temp_kuche).state);'
+
+  - platform: homeassistant
+    id: temp_badezimmer
+    entity_id: sensor.thermometer_badezimmer_temperatur
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: label_temp_badezimmer
+            text: !lambda 'return str_sprintf("Badezimmer: %.1f °C", id(temp_badezimmer).state);'
+
+  - platform: homeassistant
+    id: temp_garten
+    entity_id: sensor.thermometer_garten_temperature
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: label_temp_garten
+            text: !lambda 'return str_sprintf("Garten: %.1f °C", id(temp_garten).state);'
+
+font:
+  - file:
+      type: gfonts
+      family: Roboto
+      weight: 400
+    id: font_regular_20
+    size: 20
+    bpp: 4
+    glyphsets:
+      - GF_Latin_Kernel
+      - GF_Latin_Core
+    glyphs:
+      - "äöüÄÖÜß°"
+
+  - file:
+      type: gfonts
+      family: Roboto
+      weight: 700
+    id: font_bold_24
+    size: 24
+    bpp: 4
+    glyphsets:
+      - GF_Latin_Kernel
+      - GF_Latin_Core
+    glyphs:
+      - "äöüÄÖÜß°"
+
 lvgl:
 
   theme:
@@ -11,26 +85,65 @@ lvgl:
       radius: 0
     - id: style_white_text
       text_color: 0xFFFFFF
+    - id: style_temperature
+      text_color: 0xFFFFFF
+      text_font: font_regular_20
+    - id: style_title
+      text_color: 0xFFFFFF
+      text_font: font_bold_24
 
   pages:
       - id: page_temp
         styles:
           - style_dark_bg
         widgets:
-          - obj:
-              x: 0
-              y: 0
-              width: 100%
-              height: 100%
-              clickable: true
-              on_click:
-                - lvgl.page.next:
-              widgets:
-                - label:
-                    styles:
-                     - style_white_text
-                    align: CENTER
-                    text: "Temperaturen"
+        - obj:
+            x: 0
+            y: 0
+            width: 100%
+            height: 100%
+            styles:
+              - style_dark_bg
+            clickable: true
+            on_click:
+              - lvgl.page.next:
+            # Vertikales Layout für die Untereinander-Anordnung:
+            layout:
+              type: FLEX
+              flex_flow: COLUMN
+              flex_align_main: CENTER
+              flex_align_cross: START
+              pad_row: 10
+            widgets:
+              - label:
+                  id: label_temp_wohnzimmer
+                  text: "Wohnzimmer: --.- °C"
+                  styles:
+                    - style_temperature
+
+              - label:
+                  id: label_temp_buro
+                  text: "Büro: --.- °C"
+                  styles:
+                    - style_temperature
+
+              - label:
+                  id: label_temp_kuche
+                  text: "Küche: --.- °C"
+                  styles:
+                    - style_temperature
+
+              - label:
+                  id: label_temp_badezimmer
+                  text: "Badezimmer: --.- °C"
+                  styles:
+                    - style_temperature
+
+              - label:
+                  id: label_temp_garten
+                  text: "Garten: --.- °C"
+                  styles:
+                    - style_temperature
 
       - id: page_shutter
         styles:
@@ -47,7 +160,7 @@ lvgl:
               widgets:
                 - label:
                     styles:
-                     - style_white_text
+                     - style_title
                     align: CENTER
                     text: "Rolladensteuerung"
 
@@ -66,6 +179,6 @@ lvgl:
               widgets:
                 - label:
                     styles:
-                     - style_white_text
+                     - style_title
                     align: CENTER
                     text: "Lichtschalter"
