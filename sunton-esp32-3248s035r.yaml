@@ -1,0 +1,112 @@
+
+esphome:
+  name: sunton-esp32-3248s035r
+  friendly_name: Sunton ESP32-3248S035R
+  comment: "Sunton ESP32-2432s028"
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+    
+logger:
+  level: DEBUG
+    
+#Enable Home Assistant API
+# Api-key aus secrets.yaml
+api:
+  encryption:
+    key: !secret sunton_esp32_3248s035r__api_key
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password:
+    !secret wifi_password
+
+# ============================================================ 
+# Home Assistant related setup
+#
+light:
+  - platform: monochromatic
+    output: backlight_pwm
+    name: Display Backlight
+    id: backlight
+    restore_mode: ALWAYS_ON
+
+# Setup a pin to control the backlight
+output:
+  - platform: ledc
+    pin: GPIO27
+    id: backlight_pwm
+    
+# SPI-Bus für das Display
+spi:
+  - id: shared_spi
+    clk_pin: GPIO14
+    mosi_pin: GPIO13
+    miso_pin: GPIO12
+
+# Touchscreen Konfiguration
+touchscreen:
+  - platform: xpt2046
+    id: my_touch
+    spi_id: shared_spi
+    cs_pin: GPIO33
+    interrupt_pin: GPIO36
+    calibration:
+      x_min: 280
+      x_max: 3860
+      y_min: 340
+      y_max: 3860
+
+display:
+  - platform: mipi_spi
+    id: my_display
+    model: ST7796
+    spi_id: shared_spi
+    cs_pin: GPIO15
+    dc_pin: GPIO2
+    dimensions:
+      width: 320
+      height: 480
+    buffer_size: 25%  # Wichtig wegen fehlendem PSRAM!
+    color_depth: 16bit
+
+# Onboard-LED zum Testen der Button-Aktion
+switch:
+  - platform: gpio
+    pin:
+      number: GPIO4
+      inverted: true
+    name: "Onboard LED"
+    id: onboard_led
+
+# LVGL GUI Definition
+lvgl:
+  buffer_size: 30%
+  rotation: 90
+  displays:
+    - my_display
+  touchscreens:
+    - my_touch
+
+  pages:
+    - id: main_page
+      bg_color: black
+      width: 270
+      height: 320
+      widgets:
+        - button:
+            bg_color: red
+            width: 160
+            height: 60
+            align: CENTER
+            widgets:
+              - label:
+                  text: "LED Schalten"
+                  align: CENTER
+            on_click:
+              - switch.toggle: onboard_led
