@@ -17,15 +17,7 @@ logger:
   level: DEBUG
     
 #Enable Home Assistant API
-<<<<<<< HEAD
-api:
-  encryption:
-    key: "GM4vD0gDLE8lJvyJNc8Pj+JLzYRIQ74Z3iZacfhNk0M="
 
-ota:
-  - platform: esphome
-    password: "21c774b71b4d5b432d8b07a4cb79b6b1"
-=======
 # Api-key aus secrets.yaml
 api:
   encryption:
@@ -34,7 +26,9 @@ api:
 ota:
   - platform: esphome
     password: !secret ota_password
->>>>>>> afeb7d7 (mit apikey secrets)
+
+packages:
+  lvgl: !include packages/lvgl_gui.yaml
 
 wifi:
   ssid: !secret wifi_ssid
@@ -140,23 +134,3 @@ lvgl:
     - my_display
   touchscreens:
     - my_touchscreen
-
-  pages:
-    - id: main_page
-      bg_color: black
-      width: 270
-      height: 320
-      widgets:
-        - button:
-            bg_color: red
-            width: 160
-            height: 60
-            align: CENTER
-            widgets:
-              - label:
-                  text: "LED Schalten"
-                  align: CENTER
-            on_press:
-              logger.log: "gedrückt"
-            on_release:
-              logger.log: "los gelassen"
