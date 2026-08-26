@@ -3,11 +3,18 @@ esphome:
   name: "sunton-2432s028"
   friendly_name: "Sunton ESP32-2432s028"
   comment: "Sunton ESP32-2432s028"
+  on_boot:
+    priority: 600.0 # Wird ausgeführt, sobald Komponenten initialisiert sind
+    then:
+      - light.turn_on:
+          id: backlight
+          brightness: 80%
 
 esp32:
   board: esp32dev
   framework:
     type: esp-idf
+ 
     
 logger:
   level: DEBUG
@@ -39,12 +46,14 @@ light:
     name: Display Backlight
     id: backlight
     restore_mode: ALWAYS_ON
+    
 
 # Setup a pin to control the backlight
 output:
   - platform: ledc
     pin: GPIO21
     id: backlight_pwm
+    
     
 # SPI-Bus für das Display
 spi:
