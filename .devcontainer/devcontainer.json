@@ -1,0 +1,20 @@
+{
+  "name": "ESPHome Workspace",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "esphome.esphome-vscode",
+        "ms-python.python"
+      ]
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": "true",
+      "configureZshAsDefaultShell": "true"
+    }
+  },
+  "postCreateCommand": "pip install --no-cache-dir esphome",
+  "remoteUser": "vscode"
+}
